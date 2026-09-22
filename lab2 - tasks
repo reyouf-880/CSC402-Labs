@@ -1,0 +1,228 @@
+package com.example.lab1_tasks
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                AllTasksScreen()
+            }
+        }
+    }
+}
+
+@Composable
+fun AllTasksScreen() {
+    var name by remember { mutableStateOf("") }
+    var submittedName by remember { mutableStateOf("") }
+    var count by remember { mutableStateOf(0) }
+    val namesList = listOf("Reoof", "Sara", "Noura", "Layan", "Ahad")
+    var isDarkTheme by remember { mutableStateOf(false) }
+    var isVisible by remember { mutableStateOf(true) }
+    var textInput by remember { mutableStateOf("") }
+    var showAlert by remember { mutableStateOf(false) }
+    var selectedOption by remember { mutableStateOf("Option 1") }
+
+    LazyColumn(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        item {
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(text = "Task 1", fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = "My First Screen", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                }
+            }
+        }
+
+        item {
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(text = "Task 2", fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedTextField(
+                        value = name,
+                        onValueChange = { name = it },
+                        label = { Text("Enter your name") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(onClick = { submittedName = name }) {
+                        Text("Submit Name")
+                    }
+                    if (submittedName.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = "Hello, $submittedName!", fontSize = 18.sp)
+                    }
+                }
+            }
+        }
+
+        item {
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(text = "Task 3", fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = "Student ID Card", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                    Text(text = "Name: Reoof", fontSize = 16.sp)
+                    Text(text = "ID: 20270000", fontSize = 16.sp)
+                }
+            }
+        }
+
+        item {
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(text = "Task 4", fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = "$count", fontSize = 32.sp, fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row {
+                        Button(onClick = { count++ }) {
+                            Text("Increment")
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(onClick = { count = 0 }) {
+                            Text("Reset")
+                        }
+                    }
+                }
+            }
+        }
+
+        item {
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(text = "Task 5 (List)", fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    for (currentName in namesList) {
+                        Text(text = "• $currentName", fontSize = 16.sp, modifier = Modifier.padding(vertical = 2.dp))
+                    }
+                }
+            }
+        }
+
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = if (isDarkTheme) Color.DarkGray else Color.LightGray)
+            ) {
+                Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(text = "Task 6", color = if (isDarkTheme) Color.White else Color.Black)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(onClick = { isDarkTheme = !isDarkTheme }) {
+                        Text("Toggle Theme")
+                    }
+                }
+            }
+        }
+
+        item {
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(text = "Task 7", fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(onClick = { isVisible = !isVisible }) {
+                        Text(if (isVisible) "Hide Text" else "Show Text")
+                    }
+                    if (isVisible) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = "This is a toggleable text", fontSize = 16.sp)
+                    }
+                }
+            }
+        }
+
+        item {
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(text = "Task 8", fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedTextField(
+                        value = textInput,
+                        onValueChange = { textInput = it },
+                        label = { Text("Live Update") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = textInput, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                }
+            }
+        }
+
+        item {
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(text = "Task 9", fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(onClick = { showAlert = true }) {
+                        Text("Show Dialog")
+                    }
+
+                    if (showAlert) {
+                        AlertDialog(
+                            onDismissRequest = { showAlert = false },
+                            title = { Text("Alert") },
+                            text = { Text("This is a simple alert dialog.") },
+                            confirmButton = {
+                                Button(onClick = { showAlert = false }) {
+                                    Text("OK")
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+        }
+
+        item {
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(text = "Task 10", fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = "Selected: $selectedOption", fontSize = 16.sp)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row {
+                        Button(onClick = { selectedOption = "Option 1" }) {
+                            Text("Option 1")
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(onClick = { selectedOption = "Option 2" }) {
+                            Text("Option 2")
+                        }
+                    }
+                }
+            }
+        }
+
+        item {
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(text = "Task 11", fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = "Lab 2 Completed Successfully", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                }
+            }
+        }
+    }
+}
