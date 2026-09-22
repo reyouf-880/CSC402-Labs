@@ -1,0 +1,104 @@
+package com.example.lab1_tasks
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                Task4Screen()
+            }
+        }
+    }
+}
+
+@Composable
+fun Task4Screen() {
+    var name by remember { mutableStateOf("") }
+    var greetingMessage by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        OutlinedTextField(
+            value = name,
+            onValueChange = { name = it },
+            label = { Text("Enter your name") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            onClick = {
+                greetingMessage = if (name.isNotBlank()) "Hello, $name!" else "Please enter a name!"
+            }
+        ) {
+            Text("Greet Me")
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        if (greetingMessage.isNotEmpty()) {
+            Text(text = greetingMessage, fontSize = 20.sp)
+        }
+    }
+}
+
+@Composable
+fun Task5Screen() {
+    var count by remember { mutableStateOf(0) }
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Count: $count",
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        Row {
+            Button(onClick = { count++ }) {
+                Text("Increment")
+            }
+            Spacer(modifier = Modifier.width(12.dp))
+            Button(
+                onClick = { count = 0 },
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+            ) {
+                Text("Reset")
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Task4Preview() {
+    Task4Screen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Task5Preview() {
+    Task5Screen()
+}
